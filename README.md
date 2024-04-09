@@ -50,8 +50,7 @@
 | <a name="input_context_file_path"></a> [context\_file\_path](#input\_context\_file\_path) | The path to the context file | `string` | n/a | yes |
 | <a name="input_docker_image_fa"></a> [docker\_image\_fa](#input\_docker\_image\_fa) | The docker image to deploy on the function app | `string` | n/a | yes |
 | <a name="input_docker_image_tag_fa"></a> [docker\_image\_tag\_fa](#input\_docker\_image\_tag\_fa) | The tag of the docker image to deploy on the function app | `string` | n/a | yes |
-| <a name="input_docker_image_tag_wa"></a> [docker\_image\_tag\_wa](#input\_docker\_image\_tag\_wa) | The tag of the docker image to deploy on the web app | `string` | n/a | yes |
-| <a name="input_docker_image_wa"></a> [docker\_image\_wa](#input\_docker\_image\_wa) | The docker image to deploy on the web app | `string` | n/a | yes |
+| <a name="input_docker_image_wa"></a> [docker\_image\_wa](#input\_docker\_image\_wa) | The docker image to deploy on the web app with the tag. Should be in the format: <image>:<tag> | `string` | n/a | yes |
 | <a name="input_docker_registry_server_password"></a> [docker\_registry\_server\_password](#input\_docker\_registry\_server\_password) | The password to connect to the docker registry server | `string` | n/a | yes |
 | <a name="input_docker_registry_server_url"></a> [docker\_registry\_server\_url](#input\_docker\_registry\_server\_url) | The URL of the docker registry server (ACR, Docker Hub, etc.) | `string` | n/a | yes |
 | <a name="input_docker_registry_server_username"></a> [docker\_registry\_server\_username](#input\_docker\_registry\_server\_username) | The username to connect to the docker registry server | `string` | n/a | yes |
@@ -62,8 +61,6 @@
 | <a name="input_platform_app_registration_secret"></a> [platform\_app\_registration\_secret](#input\_platform\_app\_registration\_secret) | The Client Secret of the app registration of the platform app | `string` | n/a | yes |
 | <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | The name of the resource group to deploy the resources | `string` | n/a | yes |
 | <a name="input_retrieved_document_nb"></a> [retrieved\_document\_nb](#input\_retrieved\_document\_nb) | The number of documents to retrieve from the search service | `string` | n/a | yes |
-| <a name="input_search_api_key"></a> [search\_api\_key](#input\_search\_api\_key) | The API key of the search service | `string` | n/a | yes |
-| <a name="input_search_endpoint_url"></a> [search\_endpoint\_url](#input\_search\_endpoint\_url) | The URL of the search endpoint | `string` | n/a | yes |
 | <a name="input_storage_account_access_key"></a> [storage\_account\_access\_key](#input\_storage\_account\_access\_key) | The access key of the storage account | `string` | n/a | yes |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | The name of the storage account | `string` | n/a | yes |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | The Azure subscription ID | `string` | n/a | yes |
@@ -74,12 +71,14 @@
 | <a name="input_chunk_size"></a> [chunk\_size](#input\_chunk\_size) | value of the chunk size parameter | `number` | `2000` | no |
 | <a name="input_docker_enable_ci"></a> [docker\_enable\_ci](#input\_docker\_enable\_ci) | Enable the CI/CD pipeline for the docker image | `string` | `"true"` | no |
 | <a name="input_embeddings_deployment_name"></a> [embeddings\_deployment\_name](#input\_embeddings\_deployment\_name) | The name of the deployment for the embeddings model. See the documentation for more information: https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models | `string` | `"text-embedding-ada-002"` | no |
+| <a name="input_enable_oryx_build"></a> [enable\_oryx\_build](#input\_enable\_oryx\_build) | Enable the Oryx build | `string` | `"true"` | no |
 | <a name="input_is_vector_store_local"></a> [is\_vector\_store\_local](#input\_is\_vector\_store\_local) | Whether the vector store is local or not | `string` | `"false"` | no |
 | <a name="input_llm_deployment_name"></a> [llm\_deployment\_name](#input\_llm\_deployment\_name) | The name of the deployment for the LLM model. See the documentation for more information: https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models | `string` | `"gpt-4"` | no |
 | <a name="input_max_token"></a> [max\_token](#input\_max\_token) | The value of the max\_token parameter | `number` | `4096` | no |
 | <a name="input_port"></a> [port](#input\_port) | The port to expose the web app on | `number` | `80` | no |
+| <a name="input_scm_do_build_during_deployment"></a> [scm\_do\_build\_during\_deployment](#input\_scm\_do\_build\_during\_deployment) | Enable the build during deployment | `string` | `"true"` | no |
 | <a name="input_streaming"></a> [streaming](#input\_streaming) | Wether to enable streaming or not | `bool` | `false` | no |
 | <a name="input_streaming_step"></a> [streaming\_step](#input\_streaming\_step) | value of the streaming step parameter | `number` | `15` | no |
 | <a name="input_temperature"></a> [temperature](#input\_temperature) | value of the temperature parameter | `string` | `"0.2"` | no |
-| <a name="input_websites_enable_app_service_storage"></a> [websites\_enable\_app\_service\_storage](#input\_websites\_enable\_app\_service\_storage) | n/a | `string` | `"false"` | no |
+| <a name="input_websites_enable_app_service_storage"></a> [websites\_enable\_app\_service\_storage](#input\_websites\_enable\_app\_service\_storage) | Enable the app service storage | `string` | `"false"` | no |
 <!-- END_TF_DOCS -->

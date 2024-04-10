@@ -5,6 +5,7 @@ resource "random_integer" "this" {
 
 locals {
   search_endpoint_url = "https://${azurerm_search_service.this.name}.search.windows.net"
+  azure_bot_endpoint  = "https://${azurerm_linux_web_app.this.name}.azurewebsites.net/bot/messages"
 }
 
 data "azurerm_resource_group" "this" {
@@ -29,8 +30,9 @@ resource "azurerm_search_service" "this" {
 data "azurerm_client_config" "current" {}
 
 resource "azuread_application" "bot" {
-  display_name = "cosmobot-${random_integer.this.result}"
-  owners       = [data.azurerm_client_config.current.object_id]
+  display_name     = "cosmobot-${random_integer.this.result}"
+  owners           = [data.azurerm_client_config.current.object_id]
+  sign_in_audience = "AzureADMultipleOrgs"
 }
 
 resource "azuread_application_password" "this" {
@@ -46,7 +48,7 @@ resource "azurerm_bot_service_azure_bot" "this" {
   microsoft_app_type         = "MultiTenant"
   streaming_endpoint_enabled = false
 
-  endpoint                              = var.azure_bot_endpoint
+  endpoint                              = local.azure_bot_endpoint
   developer_app_insights_application_id = azurerm_application_insights.this.app_id
 }
 
@@ -135,7 +137,7 @@ resource "azurerm_linux_web_app" "this" {
     AAD_TENANT_ID                       = var.tenant_id
     ADX_AAD_APP_ID                      = var.platform_app_registration_id,
     ADX_AAD_SECRET                      = var.platform_app_registration_secret,
-    AZURE_BOT_APP_ID                    = azuread_application.bot.id,
+    AZURE_BOT_APP_ID                    = azuread_application.bot.client_id,
     AZURE_BOT_PASSWORD                  = azuread_application_password.this.value,
     AZURE_OPEN_AI_API_KEY               = azurerm_cognitive_account.this.primary_access_key,
     AZURE_OPEN_AI_API_TYPE              = var.azure_open_ai_api_type,
@@ -145,12 +147,12 @@ resource "azurerm_linux_web_app" "this" {
     CHUNK_OVERLAP                       = var.chunk_overlap,
     CONTEXT_FILE_PATH                   = var.context_file_path,
     DOCKER_ENABLE_CI                    = var.docker_enable_ci
-    EMBEDDINGS_DEPLOYEMENT_NAME         = var.embeddings_deployment_name,
+    EMBEDDINGS_DEPLOYEMENT_NAME         = azurerm_cognitive_deployment.embedded.name,
     INDEX_NAME                          = var.index_name,
     IS_VECTOR_STORE_LOCAL               = var.is_vector_store_local,
     KUSTO_CLUSTER_URL                   = var.kusto_cluster_url,
     KUSTO_DATABASE                      = var.kusto_database,
-    LLM_DEPLOYMENT_NAME                 = var.llm_deployment_name,
+    LLM_DEPLOYMENT_NAME                 = azurerm_cognitive_deployment.gpt.name,
     MAX_TOKEN                           = var.max_token,
     PORT                                = var.port,
     RETRIEVED_DOCUMENT_NB               = var.retrieved_document_nb,
@@ -212,7 +214,7 @@ resource "azurerm_linux_function_app" "this" {
     CHUNK_SIZE                          = var.chunk_size,
     CHUNK_OVERLAP                       = var.chunk_overlap,
     DOCKER_ENABLE_CI                    = var.docker_enable_ci
-    EMBEDDINGS_DEPLOYEMENT_NAME         = var.embeddings_deployment_name,
+    EMBEDDINGS_DEPLOYEMENT_NAME         = azurerm_cognitive_deployment.embedded.name,
     ENABLE_ORYX_BUILD                   = var.enable_oryx_build,
     INDEX_NAME                          = var.index_name,
     RETRIEVED_DOCUMENT_NB               = var.retrieved_document_nb,
@@ -223,4 +225,8 @@ resource "azurerm_linux_function_app" "this" {
   }
 
   depends_on = [azurerm_cognitive_account.this, azurerm_search_service.this]
+
+  lifecycle {
+    ignore_changes = [sticky_settings]
+  }
 }
